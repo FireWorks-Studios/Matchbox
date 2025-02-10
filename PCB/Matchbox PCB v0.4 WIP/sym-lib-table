@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "KeyBoarderMapper")(type "KiCad")(uri "${KIPRJMOD}/KeyBoarderMapper.kicad_sym")(options "")(descr ""))
+  (lib (name "KeyBoard_Library")(type "KiCad")(uri "${KIPRJMOD}/KeyBoard_Library.kicad_sym")(options "")(descr ""))
+)
