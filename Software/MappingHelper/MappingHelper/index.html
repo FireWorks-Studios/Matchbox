@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapping Helper</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Matchbox Mapping Helper</h1>
+    </header>
+    <main>
+        <section>
+            <p>This is a basic website to help with mapping new keyboard PCBs.</p>
+        </section>
+        <section class="sticky-container">
+            <label for="numberInput">Enter number of pins on keyboard PCB:</label>
+            <input type="number" id="numberInput" min="1" onkeydown="if(event.key === 'Enter') generateTable()">
+            <button type="button" onclick="generateTable()">Confirm</button>
+            <div id="buttonContainer"></div>
+            <div id="textInputContainer"></div>
+        </section>
+        <section>
+            <div id="tableContainer"></div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; FireWorks Studios 2025</p>
+    </footer>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
