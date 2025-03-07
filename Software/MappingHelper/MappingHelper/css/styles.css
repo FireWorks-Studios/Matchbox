@@ -43,6 +43,11 @@ th {
     z-index: 1;
 }
 
+.header-cell {
+    background-color: #333;
+    color: white;
+}
+
 .log-cell.highlight {
     background-color: yellow;
 }

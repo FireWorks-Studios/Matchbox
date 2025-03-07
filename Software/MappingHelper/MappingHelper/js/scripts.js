@@ -2,6 +2,16 @@ var numberInput = document.getElementById('numberInput').value;
 var tableSize = parseInt(numberInput) + 1;
 var logData = {}; // Object to store log data for each pin
 
+// Add event listeners for export and load buttons
+document.getElementById('exportButton').addEventListener('click', exportLogData);
+document.getElementById('loadButton').addEventListener('click', function() {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = '.json';
+    fileInput.addEventListener('change', loadLogData);
+    fileInput.click();
+});
+
 function generateTable() {
     numberInput = document.getElementById('numberInput').value;
     tableSize = parseInt(numberInput) + 1;
@@ -19,7 +29,6 @@ function generateTable() {
 
     // Generate buttons
     for (let i = 1; i < tableSize; i++) {
-        logData[`P${i}`] = []; // Initialize log data for each pin
         createButton(i, buttonContainer, textInputContainer, tableContainer);
     }
 
@@ -42,7 +51,8 @@ function generateTable() {
                     cell.textContent = `P${j}`; // Label header cells in the first row
                 }
             } else if (j === 0) {
-                cell.textContent = `P${i}`; // Label header cells in the first column
+                cell.textContent = `P${i}`;
+                cell.classList.add('header-cell');
             } else if (j === 1) {
                 cell.textContent = `P${i} log: `;
                 cell.id = `log-${i}`;
@@ -57,7 +67,7 @@ function generateTable() {
                 cell.textContent = ''; // Leave other cells empty
                 cell.id = `log-${j}-${i}`;
             }
-            cell.addEventListener('mouseover', showTooltip);
+            cell.addEventListener('mousemove', showTooltip);
             cell.addEventListener('mouseout', hideTooltip);
             row.appendChild(cell);
         }
@@ -164,7 +174,7 @@ function showTooltip(event) {
         document.body.appendChild(newTooltip);
     }
     const tooltipElement = document.getElementById('tooltip');
-    tooltipElement.textContent = `ID: ${event.target.id}, Value: ${event.target.textContent}`;
+    tooltipElement.textContent = `${event.target.id.slice(4)}, Value: ${event.target.textContent}`;
     tooltipElement.style.display = 'block';
     tooltipElement.style.left = `${event.pageX + 10}px`;
     tooltipElement.style.top = `${event.pageY + 10}px`;
@@ -174,5 +184,42 @@ function hideTooltip() {
     const tooltip = document.getElementById('tooltip');
     if (tooltip) {
         tooltip.style.display = 'none';
+    }
+}
+
+function exportLogData() {
+    const dataStr = JSON.stringify(logData, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'logData.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    alert('File saved to downloads!');
+}
+
+function loadLogData(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const content = e.target.result;
+            logData = JSON.parse(content);
+            document.getElementById('numberInput').value = Object.keys(logData).length;
+            console.log('Loaded log data:', logData);
+            generateTable();
+            // Loop through each pin and load in the log cell data
+            for (let pin in logData) {
+                const pinNumber = pin.slice(1);
+                console.log(`Pin: ${pin}, Log: ${logData[pin]}`);
+                const logCell = document.getElementById(`log-${pinNumber}`);
+                if (logCell) {
+                    logCell.textContent = `${pin} log: ${logData[pin].join(', ')}`;
+                }
+            }
+            compileTable();
+        };
+        reader.readAsText(file);
     }
 }

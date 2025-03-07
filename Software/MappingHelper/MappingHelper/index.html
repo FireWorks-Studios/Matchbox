@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Matchbox Mapping Helper</h1>
+        <h1>Matchbox Keyboard Mapping Tool</h1>
     </header>
     <main>
         <section>
@@ -18,6 +18,8 @@
             <label for="numberInput">Enter number of pins on keyboard PCB:</label>
             <input type="number" id="numberInput" min="1" onkeydown="if(event.key === 'Enter') generateTable()">
             <button type="button" onclick="generateTable()">Confirm</button>
+            <button type="button" id="exportButton">Export</button>
+            <button type="button" id="loadButton">Load</button>
             <div id="buttonContainer"></div>
             <div id="textInputContainer"></div>
         </section>
