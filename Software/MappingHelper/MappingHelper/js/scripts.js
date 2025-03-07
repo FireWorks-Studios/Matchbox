@@ -29,6 +29,9 @@ function generateTable() {
 
     // Generate buttons
     for (let i = 1; i < tableSize; i++) {
+        if (!logData[`P${i}`]) {
+            logData[`P${i}`] = []; // Initialize log data for each pin if there isn't any
+        }
         createButton(i, buttonContainer, textInputContainer, tableContainer);
     }
 
@@ -188,15 +191,24 @@ function hideTooltip() {
 }
 
 function exportLogData() {
+    //check if logData is empty
+    if (Object.keys(logData).length === 0) {
+        alert('No log data to export! Create a table first.');
+        return;
+    }
     const dataStr = JSON.stringify(logData, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
+    const fileName = document.getElementById('keyboardModel').value;
+    if (fileName) {
+        a.download = `${fileName} mapping.json`;
+    } else {
+        a.download = 'keyboard mapping.json';
+    }
     a.href = url;
-    a.download = 'logData.json';
     a.click();
     URL.revokeObjectURL(url);
-    alert('File saved to downloads!');
 }
 
 function loadLogData(event) {
@@ -207,6 +219,9 @@ function loadLogData(event) {
             const content = e.target.result;
             logData = JSON.parse(content);
             document.getElementById('numberInput').value = Object.keys(logData).length;
+            if(file.name.split(' mapping')[0] != 'keyboard' && file.name.includes('mapping')){
+                document.getElementById('keyboardModel').value = file.name.split(' mapping')[0]; 
+            }
             console.log('Loaded log data:', logData);
             generateTable();
             // Loop through each pin and load in the log cell data
