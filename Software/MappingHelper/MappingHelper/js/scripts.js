@@ -1,18 +1,41 @@
 var numberInput = document.getElementById('numberInput').value;
 var tableSize = parseInt(numberInput) + 1;
 var logData = {}; // Object to store log data for each pin
+var mapping = {}; // Object to store classification of keys on the mini keyboard
+var allKeys = {}; // Object to store all keys from allKeys.json
+var config = {}; // Object to store configuration from config.json
+var cursorOn = null; // Variable to store the id of the element that has focus
+
+// Load all keys from allKeys.json
+fetch('allKeys.json')
+    .then(response => response.json())
+    .then(data => {
+        allKeys = data;
+        console.log('Loaded allKeys.json:', allKeys);
+    })
+    .catch(error => console.error('Error loading allKeys.json:', error));
+
+// Load configuration from config.json
+fetch('config.json')
+    .then(response => response.json())
+    .then(data => {
+        config = data;
+        console.log('Loaded config.json:', config);
+    })
+    .catch(error => console.error('Error loading config.json:', error));
 
 // Add event listeners for export and load buttons
-document.getElementById('exportButton').addEventListener('click', exportLogData);
+document.getElementById('exportButton').addEventListener('click', exportData);
 document.getElementById('loadButton').addEventListener('click', function() {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = '.json';
-    fileInput.addEventListener('change', loadLogData);
+    fileInput.addEventListener('change', loadData);
     fileInput.click();
 });
 
 function generateTable() {
+    resetMiniKeyboard();
     numberInput = document.getElementById('numberInput').value;
     tableSize = parseInt(numberInput) + 1;
     const buttonContainer = document.getElementById('buttonContainer');
@@ -88,6 +111,7 @@ function generateTable() {
 function createButton(i, buttonContainer, textInputContainer, tableContainer) {
     const button = document.createElement('button');
     button.textContent = `P${i}`;
+    button.id = `PinBtn${i}`;
     button.addEventListener('click', function() {
         // Remove highlight from all buttons
         const buttons = buttonContainer.getElementsByTagName('button');
@@ -96,6 +120,9 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
         }
         // Add highlight to the clicked button
         button.classList.add('highlight');
+
+        //Update cursorOn
+        cursorOn = button.id;
 
         // Highlight the corresponding log cell
         const logCells = tableContainer.getElementsByClassName('log-cell');
@@ -114,12 +141,16 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
         textInput.type = 'text';
         textInput.style.width = '20%';
         textInput.addEventListener('keydown', function(event) {
-            const key = event.key;
+            event.preventDefault();
+            const key = event.code;
             if (!logData[`P${i}`].includes(key)) {
                 logData[`P${i}`].push(key);
                 logCell.textContent = `P${i} log: ${logData[`P${i}`].join(', ')}`;
+                compileTable(); // only needs to recomplie the table when a new key is added
             }
-            console.log(`Key pressed: ${key}, Code: ${event.code}`);
+            // console.log(`Key pressed: ${key}, Code: ${event.code}`);
+            //put focus back on text input box after every key press incase the key somehow makes the focus lost
+            textInput.focus();
         });
         textInputContainer.appendChild(textInput);
 
@@ -133,7 +164,7 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
         textInputContainer.appendChild(clearButton);
 
         const compileTableButton = document.createElement('button');
-        compileTableButton.textContent = 'Compile table';
+        compileTableButton.textContent = 'Recompile table';
         compileTableButton.addEventListener('click', compileTable);
         textInputContainer.appendChild(compileTableButton);
 
@@ -143,6 +174,9 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
 }
 
 function compileTable() {
+    // Initialize key classification object
+    mapping = {};
+
     // Loop through every pair of pins and find out what the mapping is
     for (let x = 2; x < tableSize; x++) {
         for (let y = 1; y < x; y++) {
@@ -166,6 +200,63 @@ function compileTable() {
             }
         }
     }
+
+    // Classify keys on the mini keyboard
+    const validKeys = new Set();
+    const errorKeys = new Set();
+
+    for (let x = 2; x < tableSize; x++) {
+        for (let y = 1; y < x; y++) {
+            const intersection = logData[`P${x}`].filter(value => logData[`P${y}`].includes(value));
+            if (intersection.length === 1) {
+                validKeys.add(intersection[0]);
+            } else if (intersection.length > 1) {
+                intersection.forEach(key => errorKeys.add(key));
+            }
+        }
+    }
+
+    Object.keys(allKeys).forEach(key => {
+        if (!mapping[key]) {
+            mapping[key] = {};
+        }
+        if (validKeys.has(key)) {
+            mapping[key].state = 'valid';
+            // Add mapping info if valid
+            mapping[key].mapping = [];
+            for (let x = 2; x < tableSize; x++) {
+            for (let y = 1; y < x; y++) {
+                const intersection = logData[`P${x}`].filter(value => logData[`P${y}`].includes(value));
+                if (intersection.length === 1 && intersection[0] === key) {
+                mapping[key].mapping = [x, y];
+                break;
+                }
+            }
+            }
+        } else if (errorKeys.has(key)) {
+            mapping[key].state = 'error';
+            mapping[key].mapping = [];
+            for (let pin in logData) {
+            if (logData[pin].includes(key)) {
+                mapping[key].mapping.push(parseInt(pin.slice(1)));
+            }
+            }
+        } else {
+            mapping[key].state = 'null';
+            mapping[key].mapping = [];
+        }
+    });
+
+    // Apply classifications to mini keyboard keys
+    const miniKeyboardKeys = document.querySelectorAll('.mini-keyboard .key');
+    miniKeyboardKeys.forEach(key => {
+        key.classList.remove('valid', 'error', 'null');
+        if (mapping[key.id]) {
+            key.classList.add(mapping[key.id].state);
+        }
+    });
+    //log out the key classification
+    // console.log(mapping);
 }
 
 function showTooltip(event) {
@@ -177,8 +268,17 @@ function showTooltip(event) {
         document.body.appendChild(newTooltip);
     }
     const tooltipElement = document.getElementById('tooltip');
-    tooltipElement.textContent = `${event.target.id.slice(4)}, Value: ${event.target.textContent}`;
     tooltipElement.style.display = 'block';
+    if (event.target.id.includes('log')) {
+        const [_, x, y] = event.target.id.split('-');
+        tooltipElement.textContent = `P${y} - P${x}: ${event.target.textContent}`;
+    }else if (event.target.classList.contains('key')) {
+        const key = event.target.id;
+        const mappingInfo = mapping[key].state == "valid" ? mapping[key].mapping.join(', ') : 'Error or Null with mapping: '+ mapping[key].mapping.join(', ');
+        tooltipElement.textContent = `Key: ${key}, Mapping: ${mappingInfo}`;
+    }else{
+        tooltipElement.style.display = 'none';
+    }
     tooltipElement.style.left = `${event.pageX + 10}px`;
     tooltipElement.style.top = `${event.pageY + 10}px`;
 }
@@ -190,13 +290,56 @@ function hideTooltip() {
     }
 }
 
-function exportLogData() {
-    //check if logData is empty
+// Add this function to check for errors in the data
+function checkForErrors() { 
+    // returns 0: no errors, 1: critical error (doens't allow export), 2: warning
+    // Check if logData is empty
     if (Object.keys(logData).length === 0) {
         alert('No log data to export! Create a table first.');
+        return 1;
+    }
+    // Check if all keys specified in config.premap are present in mapping
+    const missingKeys = config.premap.filter(key => !mapping[key] || mapping[key].state !== 'valid');
+    if (missingKeys.length > 0) {
+        console.error(`The following keys are missing or not valid: ${missingKeys.join(', ')}. Please make sure the keys needed are mapped correctly before exporting. Visit https://fireworks-studios.gitbook.io/fireworks-studios for more documentation.`);
+        return 2;
+    }
+    return 0;
+}
+
+function exportData() {
+    // Check for errors in the data before export
+    const errorCheck = checkForErrors();
+    if (errorCheck == 1) {
         return;
     }
-    const dataStr = JSON.stringify(logData, null, 2);
+
+    // Prepare the data to be exported
+    const exportData = {
+        mapping: {},
+        metadata: {
+            keyboardModel: document.getElementById('keyboardModel').value,
+            totalPins: tableSize - 1,
+            cursorOn: cursorOn
+        },
+        logData: logData
+    };
+
+    // Add valid keys to the mapping object, starting with config.premap
+    config.premap.forEach(key => {
+        if (mapping[key] && mapping[key].state === 'valid') {
+            exportData.mapping[key] = mapping[key].mapping;
+        }
+    });
+
+    // Add other valid keys to the mapping object
+    Object.keys(mapping).forEach(key => {
+        if (mapping[key].state === 'valid' && !exportData.mapping[key]) {
+            exportData.mapping[key] = mapping[key].mapping;
+        }
+    });
+
+    const dataStr = JSON.stringify(exportData, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -209,19 +352,27 @@ function exportLogData() {
     a.href = url;
     a.click();
     URL.revokeObjectURL(url);
+
+    console.log('Exported log data:', exportData);
+    if (errorCheck == 2) {
+        alert('Log data exported successfully with warnings. Check the console for more details.');
+    } else {
+        alert('Log data exported successfully! Check your downloads folder.');
+    }
 }
 
-function loadLogData(event) {
+function loadData(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
             const content = e.target.result;
-            logData = JSON.parse(content);
-            document.getElementById('numberInput').value = Object.keys(logData).length;
-            if(file.name.split(' mapping')[0] != 'keyboard' && file.name.includes('mapping')){
-                document.getElementById('keyboardModel').value = file.name.split(' mapping')[0]; 
-            }
+            const loadedData = JSON.parse(content);
+
+            document.getElementById('numberInput').value = loadedData.metadata.totalPins;
+            document.getElementById('keyboardModel').value = loadedData.metadata.keyboardModel;
+
+            logData = loadedData.logData; 
             console.log('Loaded log data:', logData);
             generateTable();
             // Loop through each pin and load in the log cell data
@@ -233,8 +384,35 @@ function loadLogData(event) {
                     logCell.textContent = `${pin} log: ${logData[pin].join(', ')}`;
                 }
             }
+            cursorOn = loadedData.metadata.cursorOn;
+            //trigger the onclick of the cursorOn button
+            if (cursorOn) {
+                const cursorElement = document.getElementById(cursorOn);
+                console.log("got cursor element", cursorElement);
+                if (cursorElement) {
+                    cursorElement.click();
+                } else {
+                    console.error(`Element with ID ${cursorOn} not found.`);
+                }
+            } else {
+                console.error('cursorOn is null or empty.');
+            }
             compileTable();
         };
         reader.readAsText(file);
     }
+}
+
+// Add event listeners for mini keyboard keys to show tooltips
+const miniKeyboardKeys = document.querySelectorAll('.mini-keyboard .key');
+miniKeyboardKeys.forEach(key => {
+    key.addEventListener('mousemove', showTooltip);
+    key.addEventListener('mouseout', hideTooltip);
+});
+
+function resetMiniKeyboard() {
+    const miniKeyboardKeys = document.querySelectorAll('.mini-keyboard .key');
+    miniKeyboardKeys.forEach(key => {
+        key.classList.remove('valid', 'error', 'null');
+    });
 }

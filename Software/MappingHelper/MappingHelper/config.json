@@ -1,0 +1,27 @@
+{
+    "premap": [
+        "KeyW",
+        "KeyS",
+        "KeyA",
+        "KeyD",
+        "KeyZ",
+
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "Space",
+
+        "KeyI",
+        "KeyK",
+        "KeyJ",
+        "KeyL",
+        "KeyC",
+
+        "KeyT",
+        "KeyG",
+        "KeyF",
+        "KeyH",
+        "Space"
+    ]
+}

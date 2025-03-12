@@ -21,6 +21,72 @@ button.highlight {
     background-color: white;
     z-index: 2;
     padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.keyboard-model-container {
+    flex: 1;
+}
+
+.mini-keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex: 1;
+    font-size: small;
+}
+
+.mini-keyboard .row {
+    display: flex;
+}
+
+.mini-keyboard .key {
+    border: 1px solid #000;
+    padding: 5px;
+    margin: 2px;
+    text-align: center;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0.9;
+    border-radius: 5px;
+}
+
+.mini-keyboard .key.wide {
+    width: 40px;
+}
+
+.mini-keyboard .key.extra-wide {
+    width: 63px;
+}
+
+.mini-keyboard .placeholder {
+    width: 40px;
+    height: 40px;
+    visibility: hidden;
+}
+
+.mini-keyboard .space {
+    width: 120px;
+}
+
+
+.mini-keyboard .key.valid {
+    background-color: #71ff4e;
+    color: #000000;
+}
+
+.mini-keyboard .key.error {
+    background-color: #ff4e4e;
+    color: #000000;
+}
+
+.mini-keyboard .key.null{
+    background-color: #868686;
+    color: #000000;
 }
 
 table {
