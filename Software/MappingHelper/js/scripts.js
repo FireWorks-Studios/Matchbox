@@ -316,12 +316,12 @@ function exportData() {
 
     // Prepare the data to be exported
     const exportData = {
-        mapping: {},
         metadata: {
             keyboardModel: document.getElementById('keyboardModel').value,
             totalPins: tableSize - 1,
             cursorOn: cursorOn
         },
+        mapping: {},
         logData: logData
     };
 
