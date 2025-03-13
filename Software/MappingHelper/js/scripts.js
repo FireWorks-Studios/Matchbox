@@ -83,6 +83,17 @@ function generateTable() {
                 cell.textContent = `P${i} log: `;
                 cell.id = `log-${i}`;
                 cell.classList.add('log-cell');
+                // Add onClick to trigger the corresponding button click
+                cell.addEventListener('click', function(event) {
+                    // Check if the click is on a span or its child
+                    if (event.target.tagName.toLowerCase() === 'span' || event.target.parentElement.tagName.toLowerCase() === 'span') {
+                        return;
+                    }
+                    const button = document.getElementById(`PinBtn${i}`);
+                    if (button) {
+                        button.click();
+                    }
+                });
             } else if (i === j) {
                 cell.classList.add('null-cell');
                 cell.textContent = 'null';
@@ -135,6 +146,10 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
             logCell.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
+        // When a log-cell is selected, turn each entry in it into a span that can be clicked on - after they are clicked on, the span will show a x on the right which can be clicked to remove the entry
+        updateAllLogCells();
+        updateLogCell(logCell, i);
+
         // Show long text input and clear button
         textInputContainer.innerHTML = ''; // Clear previous text input if any
         const textInput = document.createElement('input');
@@ -144,9 +159,9 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
             event.preventDefault();
             const key = event.code;
             if (!logData[`P${i}`].includes(key)) {
-                logData[`P${i}`].push(key);
-                logCell.textContent = `P${i} log: ${logData[`P${i}`].join(', ')}`;
-                compileTable(); // only needs to recomplie the table when a new key is added
+            logData[`P${i}`].push(key);
+            updateAllLogCells();
+            compileTable(); // only needs to recompile the table when a new key is added
             }
             // console.log(`Key pressed: ${key}, Code: ${event.code}`);
             //put focus back on text input box after every key press incase the key somehow makes the focus lost
@@ -158,7 +173,7 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
         clearButton.textContent = `Clear P${i} logs`;
         clearButton.addEventListener('click', function() {
             logData[`P${i}`] = [];
-            logCell.textContent = `P${i} log: `;
+            updateAllLogCells();
             textInput.focus(); // Return focus to the text input
         });
         textInputContainer.appendChild(clearButton);
@@ -169,9 +184,60 @@ function createButton(i, buttonContainer, textInputContainer, tableContainer) {
         textInputContainer.appendChild(compileTableButton);
 
         textInput.focus(); // Focus on the text input
-    });
-    buttonContainer.appendChild(button);
-}
+        });
+        buttonContainer.appendChild(button);
+    }
+    function updateLogCell(logCell, pinIndex) {
+
+        //if log cell != cursorOn, reset the log cell to be regular text, no spans and not selectable
+        if (logCell.id !== `log-${cursorOn.slice(6)}`) {
+            logCell.innerHTML = `P${pinIndex} log: ${logData[`P${pinIndex}`].join(', ')}`;
+            return;
+        }
+        //otherwise, turn each entry in the log cell into a span that can be clicked on - after they are clicked on, the span will show a x on the right which can be clicked to remove the entry
+        logCell.innerHTML = `P${pinIndex} log: `;
+        logData[`P${pinIndex}`].forEach(entry => {
+        const span = document.createElement('span');
+        span.textContent = entry;
+        span.style.marginRight = '5px';
+        span.style.cursor = 'pointer';
+        span.style.borderRadius = '5px';
+        span.style.padding = '2px';
+        span.style.paddingLeft = '5px';
+        span.style.paddingRight = '5px';
+        span.dataset.pinIndex = pinIndex;
+        span.dataset.entry = entry;
+        span.addEventListener('click', function() {
+            // Revert all spans to normal styling
+            const allSpans = document.querySelectorAll('span[data-pin-index]');
+            allSpans.forEach(s => {
+            s.style.backgroundColor = '';
+            s.style.color = '';
+            s.innerHTML = s.textContent.replace(/\s*x$/, '');
+            });
+
+            // Apply styling to the clicked span
+            span.style.backgroundColor = 'black';
+            span.style.color = 'white';
+            span.innerHTML = `${entry}&nbsp;<span style="color: white; cursor: pointer; display: inline;">x</span>`;
+            span.querySelector('span').addEventListener('click', function() {
+            logData[`P${pinIndex}`] = logData[`P${pinIndex}`].filter(e => e !== entry);
+            updateAllLogCells();
+            });
+        });
+        logCell.appendChild(span);
+        });
+    }
+
+    function updateAllLogCells() {
+        for (let pin in logData) {
+        const pinNumber = pin.slice(1);
+        const logCell = document.getElementById(`log-${pinNumber}`);
+        if (logCell) {
+            updateLogCell(logCell, pinNumber);
+        }
+        }
+    }
 
 function compileTable() {
     // Initialize key classification object
@@ -269,7 +335,7 @@ function showTooltip(event) {
     }
     const tooltipElement = document.getElementById('tooltip');
     tooltipElement.style.display = 'block';
-    if (event.target.id.includes('log')) {
+    if (/^log-\d+-\d+$/.test(event.target.id)) {
         const [_, x, y] = event.target.id.split('-');
         tooltipElement.textContent = `P${y} - P${x}: ${event.target.textContent}`;
     }else if (event.target.classList.contains('key')) {
@@ -388,7 +454,6 @@ function loadData(event) {
             //trigger the onclick of the cursorOn button
             if (cursorOn) {
                 const cursorElement = document.getElementById(cursorOn);
-                console.log("got cursor element", cursorElement);
                 if (cursorElement) {
                     cursorElement.click();
                 } else {
