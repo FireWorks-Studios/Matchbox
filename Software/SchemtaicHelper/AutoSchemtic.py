@@ -11,7 +11,6 @@ saveSchDir = os.path.join(dir,'Generated Schematic')
 
 gridOrigin = (15, 10)
 unitSpace = 2.54
-number_of_keyboard_pins = 26
             
 def loadData(dir_list):
     sch = None
@@ -129,6 +128,14 @@ def create_D1(basedOn:Symbol, numrows:int, numcols:int, start_ref_count:int=1):
             dcount += 1
         table.append(column_symbol)
 
+def extract_total_keyboard_pins(keyboard_mapping):
+    metadata = keyboard_mapping['metadata']
+    return metadata['totalPins']
+
+def crate_schematic_file_name(keyboard_mapping):
+    metadata = keyboard_mapping['metadata']
+    return metadata['keyboardModel']
+
 def extract_pins_per_M100(config, keyboard_mapping):
     # Extract the keys to map on the M100 component
     keys_to_map = config['premap']
@@ -146,6 +153,9 @@ def extract_pins_per_M100(config, keyboard_mapping):
 # load the matchbox mapping
 sch, config, keyboard_mapping = loadData(dir_list)
 
+# Extract the total number of keyboard pins
+number_of_keyboard_pins = extract_total_keyboard_pins(keyboard_mapping)
+
 # Extract the pins needed for each M100 component
 pins_per_M100 = extract_pins_per_M100(config, keyboard_mapping)
 
@@ -155,7 +165,7 @@ print(create_M100(sch.symbol.M100, 4, 1))
 create_D1(sch.symbol.D1, 1, 1)
 
 # Save the schematic
-sch.write(os.path.join(saveSchDir, 'Test.kicad_sch'))
+sch.write(os.path.join(saveSchDir, crate_schematic_file_name(keyboard_mapping)+' schematic.kicad_sch'))
 
 
 
