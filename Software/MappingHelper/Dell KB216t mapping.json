@@ -1,0 +1,682 @@
+{
+  "metadata": {
+    "keyboardModel": "Dell KB216t",
+    "totalPins": 28,
+    "cursorOn": ""
+  },
+  "mapping": {
+    "KeyW": [
+      25,
+      8
+    ],
+    "KeyS": [
+      23,
+      8
+    ],
+    "KeyA": [
+      24,
+      18
+    ],
+    "KeyD": [
+      24,
+      15
+    ],
+    "KeyZ": [
+      22,
+      18
+    ],
+    "ArrowUp": [
+      24,
+      3
+    ],
+    "ArrowDown": [
+      21,
+      2
+    ],
+    "ArrowLeft": [
+      22,
+      2
+    ],
+    "ArrowRight": [
+      23,
+      3
+    ],
+    "Space": [
+      21,
+      8
+    ],
+    "KeyI": [
+      23,
+      13
+    ],
+    "KeyK": [
+      22,
+      13
+    ],
+    "KeyJ": [
+      23,
+      12
+    ],
+    "KeyL": [
+      22,
+      14
+    ],
+    "KeyC": [
+      23,
+      15
+    ],
+    "KeyT": [
+      26,
+      10
+    ],
+    "KeyG": [
+      24,
+      10
+    ],
+    "KeyF": [
+      24,
+      9
+    ],
+    "KeyH": [
+      24,
+      12
+    ],
+    "KeyX": [
+      22,
+      8
+    ],
+    "AltLeft": [
+      28,
+      1
+    ],
+    "AltRight": [
+      23,
+      1
+    ],
+    "Backquote": [
+      27,
+      18
+    ],
+    "Backslash": [
+      27,
+      3
+    ],
+    "Backspace": [
+      27,
+      2
+    ],
+    "BracketLeft": [
+      25,
+      2
+    ],
+    "BracketRight": [
+      28,
+      3
+    ],
+    "CapsLock": [
+      24,
+      5
+    ],
+    "Comma": [
+      22,
+      10
+    ],
+    "ContextMenu": [
+      22,
+      1
+    ],
+    "ControlLeft": [
+      26,
+      6
+    ],
+    "ControlRight": [
+      24,
+      6
+    ],
+    "Delete": [
+      26,
+      3
+    ],
+    "Digit0": [
+      24,
+      13
+    ],
+    "Digit1": [
+      27,
+      8
+    ],
+    "Digit2": [
+      26,
+      8
+    ],
+    "Digit3": [
+      26,
+      15
+    ],
+    "Digit4": [
+      27,
+      9
+    ],
+    "Digit5": [
+      26,
+      9
+    ],
+    "Digit6": [
+      27,
+      10
+    ],
+    "Digit7": [
+      26,
+      12
+    ],
+    "Digit8": [
+      26,
+      13
+    ],
+    "Digit9": [
+      25,
+      13
+    ],
+    "End": [
+      26,
+      11
+    ],
+    "Enter": [
+      25,
+      3
+    ],
+    "Equal": [
+      24,
+      14
+    ],
+    "Escape": [
+      28,
+      18
+    ],
+    "F1": [
+      28,
+      8
+    ],
+    "F2": [
+      28,
+      15
+    ],
+    "F3": [
+      27,
+      15
+    ],
+    "F4": [
+      28,
+      9
+    ],
+    "F5": [
+      28,
+      10
+    ],
+    "F6": [
+      28,
+      12
+    ],
+    "F7": [
+      27,
+      12
+    ],
+    "F8": [
+      28,
+      13
+    ],
+    "F9": [
+      27,
+      13
+    ],
+    "F10": [
+      28,
+      14
+    ],
+    "F12": [
+      26,
+      14
+    ],
+    "Home": [
+      23,
+      20
+    ],
+    "Insert": [
+      21,
+      20
+    ],
+    "KeyB": [
+      22,
+      12
+    ],
+    "KeyE": [
+      25,
+      15
+    ],
+    "KeyM": [
+      22,
+      9
+    ],
+    "KeyN": [
+      23,
+      10
+    ],
+    "KeyO": [
+      23,
+      14
+    ],
+    "KeyP": [
+      26,
+      2
+    ],
+    "KeyQ": [
+      25,
+      18
+    ],
+    "KeyR": [
+      25,
+      9
+    ],
+    "KeyU": [
+      25,
+      12
+    ],
+    "KeyV": [
+      23,
+      9
+    ],
+    "KeyY": [
+      25,
+      10
+    ],
+    "MetaLeft": [
+      27,
+      19
+    ],
+    "Minus": [
+      25,
+      14
+    ],
+    "Numpad0": [
+      22,
+      3
+    ],
+    "Numpad1": [
+      27,
+      4
+    ],
+    "Numpad2": [
+      26,
+      4
+    ],
+    "Numpad3": [
+      25,
+      4
+    ],
+    "Numpad4": [
+      28,
+      4
+    ],
+    "Numpad5": [
+      22,
+      11
+    ],
+    "Numpad6": [
+      21,
+      11
+    ],
+    "Numpad7": [
+      24,
+      11
+    ],
+    "Numpad8": [
+      27,
+      11
+    ],
+    "Numpad9": [
+      23,
+      11
+    ],
+    "NumpadAdd": [
+      23,
+      4
+    ],
+    "NumpadDecimal": [
+      21,
+      3
+    ],
+    "NumpadDivide": [
+      28,
+      11
+    ],
+    "NumpadEnter": [
+      21,
+      4
+    ],
+    "NumpadMultiply": [
+      25,
+      11
+    ],
+    "NumpadSubtract": [
+      24,
+      4
+    ],
+    "NumLock": [
+      24,
+      20
+    ],
+    "PageDown": [
+      22,
+      20
+    ],
+    "PageUp": [
+      25,
+      20
+    ],
+    "Period": [
+      21,
+      12
+    ],
+    "Quote": [
+      23,
+      2
+    ],
+    "Semicolon": [
+      24,
+      2
+    ],
+    "ShiftLeft": [
+      25,
+      7
+    ],
+    "ShiftRight": [
+      21,
+      7
+    ],
+    "Slash": [
+      21,
+      13
+    ],
+    "Tab": [
+      26,
+      18
+    ]
+  },
+  "logData": {
+    "P1": [
+      "ContextMenu",
+      "AltRight",
+      "AltLeft"
+    ],
+    "P2": [
+      "ArrowDown",
+      "ArrowLeft",
+      "Quote",
+      "Semicolon",
+      "BracketLeft",
+      "KeyP",
+      "Backspace",
+      "IntlYen"
+    ],
+    "P3": [
+      "ArrowUp",
+      "Enter",
+      "Delete",
+      "BracketRight",
+      "Numpad0",
+      "ArrowRight",
+      "NumpadDecimal"
+    ],
+    "P4": [
+      "NumpadEnter",
+      "NumpadComma",
+      "NumpadAdd",
+      "NumpadSubtract",
+      "Numpad3",
+      "Numpad2",
+      "Numpad1",
+      "Numpad4"
+    ],
+    "P5": [
+      "Backslash",
+      "CapsLock"
+    ],
+    "P6": [
+      "ControlRight",
+      "ControlLeft"
+    ],
+    "P7": [
+      "ShiftRight",
+      "ShiftLeft"
+    ],
+    "P8": [
+      "Space",
+      "KeyX",
+      "KeyS",
+      "KeyW",
+      "Digit2",
+      "Digit1",
+      "F1"
+    ],
+    "P9": [
+      "KeyM",
+      "KeyV",
+      "KeyF",
+      "KeyR",
+      "Digit5",
+      "Digit4",
+      "F4"
+    ],
+    "P10": [
+      "Comma",
+      "KeyN",
+      "KeyG",
+      "KeyY",
+      "KeyT",
+      "Digit6",
+      "F5"
+    ],
+    "P11": [
+      "Numpad6",
+      "Numpad5",
+      "Numpad9",
+      "Numpad7",
+      "NumpadMultiply",
+      "End",
+      "Numpad8",
+      "NumpadDivide"
+    ],
+    "P12": [
+      "Period",
+      "KeyB",
+      "KeyJ",
+      "KeyH",
+      "KeyU",
+      "Digit7",
+      "F7",
+      "F6"
+    ],
+    "P13": [
+      "Slash",
+      "KeyK",
+      "KeyI",
+      "Digit0",
+      "Digit9",
+      "Digit8",
+      "F8",
+      "F9"
+    ],
+    "P14": [
+      "IntlRo",
+      "KeyL",
+      "KeyO",
+      "Equal",
+      "Minus",
+      "F12",
+      "F10"
+    ],
+    "P15": [
+      "KeyC",
+      "KeyD",
+      "KeyE",
+      "Digit3",
+      "F3",
+      "F2"
+    ],
+    "P16": [
+      "KeyC",
+      "KeyD",
+      "KeyE",
+      "Digit3",
+      "F3",
+      "F2"
+    ],
+    "P17": [
+      "KeyC",
+      "KeyD",
+      "KeyE",
+      "Digit3",
+      "F3",
+      "F2"
+    ],
+    "P18": [
+      "KeyZ",
+      "IntlBackslash",
+      "KeyA",
+      "KeyQ",
+      "Tab",
+      "Backquote",
+      "Escape"
+    ],
+    "P19": [
+      "MetaLeft"
+    ],
+    "P20": [
+      "Insert",
+      "PageDown",
+      "Home",
+      "NumLock",
+      "PageUp"
+    ],
+    "P21": [
+      "Insert",
+      "IntlRo",
+      "Slash",
+      "Period",
+      "Numpad6",
+      "Space",
+      "ShiftRight",
+      "NumpadEnter",
+      "NumpadDecimal",
+      "ArrowDown"
+    ],
+    "P22": [
+      "PageDown",
+      "KeyZ",
+      "KeyL",
+      "KeyK",
+      "KeyB",
+      "Numpad5",
+      "Comma",
+      "KeyM",
+      "KeyX",
+      "NumpadComma",
+      "Numpad0",
+      "ArrowLeft",
+      "ContextMenu"
+    ],
+    "P23": [
+      "Home",
+      "IntlBackslash",
+      "KeyC",
+      "KeyO",
+      "KeyI",
+      "KeyJ",
+      "Numpad9",
+      "KeyN",
+      "KeyV",
+      "KeyS",
+      "Backslash",
+      "NumpadAdd",
+      "ArrowRight",
+      "Quote",
+      "AltRight"
+    ],
+    "P24": [
+      "NumLock",
+      "KeyA",
+      "KeyD",
+      "Equal",
+      "Digit0",
+      "KeyH",
+      "Numpad7",
+      "KeyG",
+      "KeyF",
+      "ControlRight",
+      "CapsLock",
+      "NumpadSubtract",
+      "ArrowUp",
+      "Semicolon"
+    ],
+    "P25": [
+      "PageUp",
+      "KeyQ",
+      "KeyE",
+      "Minus",
+      "Digit9",
+      "KeyU",
+      "NumpadMultiply",
+      "KeyY",
+      "KeyR",
+      "KeyW",
+      "ShiftLeft",
+      "Numpad3",
+      "Enter",
+      "BracketLeft"
+    ],
+    "P26": [
+      "Tab",
+      "Digit3",
+      "F12",
+      "Digit8",
+      "Digit7",
+      "End",
+      "KeyT",
+      "Digit5",
+      "Digit2",
+      "ControlLeft",
+      "Numpad2",
+      "Delete",
+      "KeyP"
+    ],
+    "P27": [
+      "MetaLeft",
+      "Backquote",
+      "F3",
+      "F9",
+      "F7",
+      "Numpad8",
+      "Digit6",
+      "Digit4",
+      "Digit1",
+      "Numpad1",
+      "Backslash",
+      "Backspace"
+    ],
+    "P28": [
+      "Escape",
+      "F2",
+      "F10",
+      "F8",
+      "F6",
+      "NumpadDivide",
+      "F5",
+      "F4",
+      "F1",
+      "Numpad4",
+      "BracketRight",
+      "IntlYen",
+      "AltLeft"
+    ]
+  }
+}

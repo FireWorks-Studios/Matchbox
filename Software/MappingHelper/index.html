@@ -14,9 +14,9 @@
         <section class="sticky-container">
             <div class="keyboard-model-container">
                 <label for="keyboardModel">Keyboard model:</label>
-                <input type="text" id="keyboardModel" placeholder="keyboard model"> <br>
+                <input type="text" id="keyboardModel" placeholder="keyboard model" value="Dell KB216t"> <br>
                 <label for="numberInput">Number of pins on keyboard PCB:</label>
-                <input type="number" id="numberInput" min="1" onkeydown="if(event.key === 'Enter') generateTable()">
+                <input type="number" id="numberInput" min="1" onkeydown="if(event.key === 'Enter') generateTable()" value="28"> <br>
                 <button type="button" onclick="generateTable()">Generate table</button>
                 <button type="button" id="exportButton">Export</button>
                 <button type="button" id="loadButton">Load</button>

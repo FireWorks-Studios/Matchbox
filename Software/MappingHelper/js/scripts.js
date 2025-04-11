@@ -468,6 +468,46 @@ function loadData(event) {
     }
 }
 
+// Load default file
+fetch('./Dell KB216t mapping.json')
+.then(response => {
+    if (!response.ok) {
+        throw new Error('Failed to load default mapping file.');
+    }
+    return response.json();
+})
+.then(loadedData => {
+    document.getElementById('numberInput').value = loadedData.metadata.totalPins;
+    document.getElementById('keyboardModel').value = loadedData.metadata.keyboardModel;
+
+    logData = loadedData.logData; 
+    console.log('Loaded log data:', logData);
+    generateTable();
+    // Loop through each pin and load in the log cell data
+    for (let pin in logData) {
+        const pinNumber = pin.slice(1);
+        console.log(`Pin: ${pin}, Log: ${logData[pin]}`);
+        const logCell = document.getElementById(`log-${pinNumber}`);
+        if (logCell) {
+            logCell.textContent = `${pin} log: ${logData[pin].join(', ')}`;
+        }
+    }
+    cursorOn = loadedData.metadata.cursorOn;
+    //trigger the onclick of the cursorOn button
+    if (cursorOn) {
+        const cursorElement = document.getElementById(cursorOn);
+        if (cursorElement) {
+            cursorElement.click();
+        } else {
+            console.error(`Element with ID ${cursorOn} not found.`);
+        }
+    } else {
+        console.error('cursorOn is null or empty.');
+    }
+    compileTable();
+})
+.catch(error => console.error('Error loading default mapping file:', error));
+
 // Add event listeners for mini keyboard keys to show tooltips
 const miniKeyboardKeys = document.querySelectorAll('.mini-keyboard .key');
 miniKeyboardKeys.forEach(key => {
