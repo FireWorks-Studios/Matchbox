@@ -26,6 +26,7 @@ fetch('config.json')
 
 // Add event listeners for export and load buttons
 document.getElementById('exportButton').addEventListener('click', exportData);
+document.getElementById('advancedSettingsToggle').addEventListener('click', toggleAdvancedSettings);
 document.getElementById('loadButton').addEventListener('click', function() {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
@@ -33,6 +34,8 @@ document.getElementById('loadButton').addEventListener('click', function() {
     fileInput.addEventListener('change', loadData);
     fileInput.click();
 });
+
+loadDefaultFile(); // Load default file on page load
 
 function generateTable() {
     resetMiniKeyboard();
@@ -468,45 +471,26 @@ function loadData(event) {
     }
 }
 
-// Load default file
-fetch('./Dell KB216t mapping.json')
-.then(response => {
-    if (!response.ok) {
-        throw new Error('Failed to load default mapping file.');
-    }
-    return response.json();
-})
-.then(loadedData => {
-    document.getElementById('numberInput').value = loadedData.metadata.totalPins;
-    document.getElementById('keyboardModel').value = loadedData.metadata.keyboardModel;
-
-    logData = loadedData.logData; 
-    console.log('Loaded log data:', logData);
-    generateTable();
-    // Loop through each pin and load in the log cell data
-    for (let pin in logData) {
-        const pinNumber = pin.slice(1);
-        console.log(`Pin: ${pin}, Log: ${logData[pin]}`);
-        const logCell = document.getElementById(`log-${pinNumber}`);
-        if (logCell) {
-            logCell.textContent = `${pin} log: ${logData[pin].join(', ')}`;
-        }
-    }
-    cursorOn = loadedData.metadata.cursorOn;
-    //trigger the onclick of the cursorOn button
-    if (cursorOn) {
-        const cursorElement = document.getElementById(cursorOn);
-        if (cursorElement) {
-            cursorElement.click();
-        } else {
-            console.error(`Element with ID ${cursorOn} not found.`);
-        }
-    } else {
-        console.error('cursorOn is null or empty.');
-    }
-    compileTable();
-})
-.catch(error => console.error('Error loading default mapping file:', error));
+function loadDefaultFile(){
+    // Load default file
+    fetch('../KeyboardMappings/Dell KB216t mapping.json') // Adjusted path to one level above
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load default mapping file.');
+            }
+            return response.json();
+        })
+        .then(loadedData => {
+            // Create a mock event object to pass the loaded data to loadData
+            const mockEvent = {
+                target: {
+                    files: [new Blob([JSON.stringify(loadedData)], { type: 'application/json' })]
+                }
+            };
+            loadData(mockEvent); // Call loadData with the mock event
+        })
+        .catch(error => console.error('Error loading default mapping file:', error));
+}
 
 // Add event listeners for mini keyboard keys to show tooltips
 const miniKeyboardKeys = document.querySelectorAll('.mini-keyboard .key');
@@ -520,4 +504,23 @@ function resetMiniKeyboard() {
     miniKeyboardKeys.forEach(key => {
         key.classList.remove('valid', 'error', 'null');
     });
+}
+
+function toggleAdvancedSettings() {
+    const tableSection = document.getElementById('tableSection');
+    const keyboardModelContainer = document.getElementById('keyboardModelContainer');
+    const advancedSettingsToggle = document.getElementById('advancedSettingsToggle');
+
+    if (tableSection && keyboardModelContainer) {
+        tableSection.classList.toggle('hidden');
+        keyboardModelContainer.classList.toggle('hidden');
+        // Update the button text based on the visibility state
+        if (tableSection.classList.contains('hidden')) {
+            advancedSettingsToggle.textContent = 'Show Advanced Settings';
+        } else {
+            advancedSettingsToggle.textContent = 'Hide Advanced Settings';
+        }
+    } else {
+        console.error('Elements with IDs "tableSection" or "keyboardModelContainer" not found.');
+    }
 }

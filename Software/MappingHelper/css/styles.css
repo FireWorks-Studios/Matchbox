@@ -35,42 +35,50 @@ button.highlight {
     align-items: flex-end;
     flex: 1;
     font-size: small;
+    width: 100%; /* Ensure it takes up the full width of the container */
 }
 
 .mini-keyboard .row {
     display: flex;
+    justify-content: center; /* Center the keys horizontally */
+    width: 100%; /* Ensure rows take up full width */
 }
 
 .mini-keyboard .key {
     border: 1px solid #000;
-    padding: 5px;
     margin: 2px;
     text-align: center;
-    width: 20px;
-    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 0.9;
     border-radius: 5px;
+
+    /* Dynamically resize keys */
+    flex: 1 1 auto; /* Allow keys to grow and shrink */
+    min-width: 20px; /* Set a minimum width for keys */
+    height: 40px; /* Adjust height proportionally */
 }
 
 .mini-keyboard .key.wide {
-    width: 40px;
+    flex: 2 1 auto; /* Wide keys take up more space */
 }
 
 .mini-keyboard .key.extra-wide {
-    width: 63px;
+    flex: 3 1 auto; /* Extra-wide keys take up even more space */
 }
 
 .mini-keyboard .placeholder {
-    width: 40px;
-    height: 40px;
+    flex: 1 1 auto;
     visibility: hidden;
 }
 
 .mini-keyboard .space {
-    width: 120px;
+    flex: 5 1 auto; /* Spacebar takes up more space */
+}
+
+.mini-keyboard .advancedSettingsToggle {
+    flex: 2 1 auto; 
 }
 
 
@@ -147,4 +155,12 @@ th {
     border-radius: 5px;
     z-index: 1000;
     display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.keyboard-model-container.hidden + .mini-keyboard {
+    flex: 1 1 100%; /* Make the mini-keyboard take up the full width */
 }

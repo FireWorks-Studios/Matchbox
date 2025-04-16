@@ -12,7 +12,7 @@
     </header>
     <main>
         <section class="sticky-container">
-            <div class="keyboard-model-container">
+            <div class="keyboard-model-container hidden" id="keyboardModelContainer">
                 <label for="keyboardModel">Keyboard model:</label>
                 <input type="text" id="keyboardModel" placeholder="keyboard model" value="Dell KB216t"> <br>
                 <label for="numberInput">Number of pins on keyboard PCB:</label>
@@ -136,7 +136,7 @@
                     <div class="key" id="ArrowUp">↑</div>
                     <div class="placeholder"></div>
                     <div class="placeholder space"></div>
-                    <div class="key extra-wide" id="Numpad0">0</div>
+                    <div class="key wide" id="Numpad0">0</div>
                     <div class="key" id="NumpadDecimal">.</div>
                 </div>
                 <div class="row">
@@ -154,11 +154,11 @@
                     <div class="placeholder"></div>
                     <div class="placeholder"></div>
                     <div class="placeholder"></div>
-                    <div class="placeholder space"></div>
+                    <button class="advancedSettingsToggle" id="advancedSettingsToggle">Show Advanced Settings</button>
                 </div>
             </div>
         </section>
-        <section>
+        <section id="tableSection" class="hidden">
             <div id="tableContainer"></div>
         </section>
     </main>
