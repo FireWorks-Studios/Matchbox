@@ -473,7 +473,7 @@ function loadData(event) {
 
 function loadDefaultFile(){
     // Load default file
-    fetch('../KeyboardMappings/Dell KB216t mapping.json') // Adjusted path to one level above
+    fetch('Dell KB216t mapping.json') // Adjusted path to one level above
         .then(response => {
             if (!response.ok) {
                 throw new Error('Failed to load default mapping file.');
