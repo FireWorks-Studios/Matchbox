@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Define source and destination directories
-SOURCE_DIR="./KeyboardMappings"
-DEST_DIR="./MappingHelper/KeyboardMappingMirror"
+SOURCE_DIR="Software/KeyboardMappings"
+DEST_DIR="Software/MappingHelper/KeyboardMappingMirror"
 
 # Copy all contents from source to destination
 cp -r "$SOURCE_DIR/"* "$DEST_DIR/"
