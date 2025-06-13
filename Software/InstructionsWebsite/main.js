@@ -1,8 +1,9 @@
-const slides = [
-  "assets/slide1.png",
-  "assets/slide2.png",
-  "assets/slide3.png"
-];
+const slides = [];
+
+for (let i = 1; i <= 47; i++) {
+  slides.push(`assets/${i}.jpeg`);
+}
+
 let current = 0;
 const slideArea = document.getElementById('slideArea');
 
