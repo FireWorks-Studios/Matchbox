@@ -188,6 +188,16 @@ slideNumberInput.addEventListener('change', () => {
   }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  const toolContainer = document.querySelector('.keyboard-tool-container');
+  const toolTab = document.querySelector('.keyboard-tool-tab');
+  if (toolContainer && toolTab) {
+    toolTab.addEventListener('click', () => {
+      toolContainer.classList.toggle('open');
+    });
+  }
+});
+
 // Fetch instructions.json and initialize
 fetch('instructions.json')
   .then(res => res.json())
