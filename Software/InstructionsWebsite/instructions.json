@@ -1,0 +1,24 @@
+[
+  {
+    "stepID": 1,
+    "stepTitle": "Part 1: Understanding the Keyboard PCB (Printed Circuit Board)",
+    "instructions": "This is where your the heart of your Matchbox comes from - an old recycled keyboard! We source these keyboards from our university.",
+    "note": [
+    ],
+    "check": [
+    ],
+    "error": [
+    ]
+  },
+{
+    "stepID": 2,
+    "stepTitle": "Part 1: Understanding the Keyboard PCB (Printed Circuit Board)",
+    "instructions": "First we unscrew the old keyboard and remove the PCB from the case.",
+    "note": [
+    ],
+    "check": [
+    ],
+    "error": [
+    ]
+  }
+]

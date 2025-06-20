@@ -1,25 +1,171 @@
 const slides = [];
-
 for (let i = 1; i <= 47; i++) {
   slides.push(`assets/${i}.jpeg`);
 }
 
-let current = 0;
+// Elements
 const slideArea = document.getElementById('slideArea');
+const slideNumberInput = document.getElementById('slideNumber');
+const tooltip = document.getElementById('tooltip');
+const stepTitle = document.getElementById('stepTitle');
+const stepInstructions = document.getElementById('stepInstructions');
 
-// Helper to render the current slide as an image
-function renderSlide(index) {
-  slideArea.innerHTML = `<img src="${slides[index]}" alt="Slide ${index + 1}" style="max-width:100%; max-height:100%;">`;
+// State
+let instructionsData = [];
+let current = parseInt(localStorage.getItem('step'), 10);
+if (isNaN(current) || current < 1 || current > slides.length) {
+  current = 1;
+  localStorage.setItem('step', current);
 }
 
-// Initial render
-renderSlide(current);
+function showTooltip(message) {
+  tooltip.textContent = message;
+  tooltip.style.display = 'block';
+  setTimeout(() => {
+    tooltip.style.display = 'none';
+  }, 2000);
+}
 
-document.getElementById('leftBtn').onclick = () => {
-  current = (current - 1 + slides.length) % slides.length;
+// Preload a specific image by index (1-based)
+function preloadImage(index) {
+  if (index < 1 || index > slides.length) return;
+  const img = new Image();
+  img.src = slides[index - 1];
+}
+
+function renderSlide(index) {
+  // Calculate indices for prev, current, next (1-based)
+  const prevIdx = (index - 2 + slides.length) % slides.length + 1;
+  const nextIdx = (index % slides.length) + 1;
+
+  slideArea.innerHTML = `
+    <div style="position:relative; width:100%; min-height:200px;">
+      <img id="prevImg" src="${slides[prevIdx - 1]}" alt="Previous Slide"
+        style="max-width:100%; max-height:80vh; display:none; position:absolute; left:0; right:0; top:0; bottom:0; margin:auto; z-index:1; transition:opacity 0.5s;">
+      <img id="currentImg" src="${slides[index - 1]}" alt="Current Slide"
+        style="max-width:100%; max-height:80vh; display:block; position:absolute; margin:0 auto; left:0; right:0; top:0; bottom:0; z-index:2; opacity:1; transition:opacity 0.5s;">
+      <img id="nextImg" src="${slides[nextIdx - 1]}" alt="Next Slide"
+        style="max-width:100%; max-height:80vh; display:none; position:absolute; left:0; right:0; top:0; bottom:0; margin:auto; z-index:1; transition:opacity 0.5s;">
+      <img src="assets/placeholder.png" alt="Placeholder"
+        style="max-width:100%; max-height:80vh; display:block; position:relative; left:0; right:0; top:0; bottom:0; margin:auto; z-index:0;">
+    </div>
+  `;
+  slideNumberInput.value = index;
+  localStorage.setItem('step', index);
+
+  // Instructions
+  if (instructionsData.length >= index) {
+    const step = instructionsData[index - 1];
+    if (step) {
+      stepTitle.textContent = step.stepTitle || `Step ${index}`;
+      stepInstructions.textContent = step.instructions || '';
+    } else {
+      stepTitle.textContent = `Step ${index}`;
+      stepInstructions.textContent = '';
+    }
+  } else {
+    stepTitle.textContent = `Step ${index}`;
+    stepInstructions.textContent = '';
+  }
+}
+
+function springyPress(btn) {
+  btn.classList.add('springy');
+  btn.classList.remove('springy-bounce');
+}
+
+function springyRelease(btn) {
+  // Remove .springy immediately, then trigger .springy-bounce for the animation
+  btn.classList.remove('springy');
+  // Force reflow to restart animation if needed
+  void btn.offsetWidth;
+  btn.classList.add('springy-bounce');
+  setTimeout(() => btn.classList.remove('springy-bounce'), 250);
+}
+
+// Navigation handlers
+const leftBtn = document.getElementById('leftBtn');
+const rightBtn = document.getElementById('rightBtn');
+
+let leftBtnPressed = false;
+let rightBtnPressed = false;
+
+leftBtn.addEventListener('mousedown', () => {
+  leftBtnPressed = true;
+  springyPress(leftBtn);
+});
+leftBtn.addEventListener('mouseup', () => {
+  if (leftBtnPressed) springyRelease(leftBtn);
+  leftBtnPressed = false;
+});
+leftBtn.addEventListener('mouseleave', () => {
+  if (leftBtnPressed) springyRelease(leftBtn);
+  leftBtnPressed = false;
+});
+leftBtn.addEventListener('click', () => {
+  current = (current - 2 + slides.length) % slides.length + 1;
   renderSlide(current);
-};
-document.getElementById('rightBtn').onclick = () => {
-  current = (current + 1) % slides.length;
+});
+
+rightBtn.addEventListener('mousedown', () => {
+  rightBtnPressed = true;
+  springyPress(rightBtn);
+});
+rightBtn.addEventListener('mouseup', () => {
+  if (rightBtnPressed) springyRelease(rightBtn);
+  rightBtnPressed = false;
+});
+rightBtn.addEventListener('mouseleave', () => {
+  if (rightBtnPressed) springyRelease(rightBtn);
+  rightBtnPressed = false;
+});
+rightBtn.addEventListener('click', () => {
+  current = (current % slides.length) + 1;
   renderSlide(current);
-};
+});
+
+// Keyboard navigation for left/right arrow keys
+document.addEventListener('keydown', (e) => {
+  if (e.target === slideNumberInput) return;
+  if (e.repeat) return;
+  if (e.key === 'ArrowLeft') {
+    springyPress(leftBtn);
+    current = (current - 2 + slides.length) % slides.length + 1;
+    renderSlide(current);
+  } else if (e.key === 'ArrowRight') {
+    springyPress(rightBtn);
+    current = (current % slides.length) + 1;
+    renderSlide(current);
+  }
+});
+document.addEventListener('keyup', (e) => {
+  if (e.target === slideNumberInput) return;
+  if (e.key === 'ArrowLeft') {
+    springyRelease(leftBtn);
+  } else if (e.key === 'ArrowRight') {
+    springyRelease(rightBtn);
+  }
+});
+
+slideNumberInput.addEventListener('change', () => {
+  const val = parseInt(slideNumberInput.value, 10);
+  if (val >= 1 && val <= slides.length) {
+    current = val;
+    renderSlide(current);
+  } else {
+    showTooltip("That step doesn't exist!");
+    slideNumberInput.value = current;
+  }
+});
+
+// Fetch instructions.json and initialize
+fetch('instructions.json')
+  .then(res => res.json())
+  .then(data => {
+    instructionsData = data;
+    renderSlide(current);
+  })
+  .catch(() => {
+    instructionsData = [];
+    renderSlide(current);
+  });
