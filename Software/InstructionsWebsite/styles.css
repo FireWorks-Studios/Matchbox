@@ -18,20 +18,23 @@ body {
   box-sizing: border-box;
 }
 
-.slide-container {
+.left-panel {
   position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   margin: 40px 0 0 40px;
   flex-shrink: 0;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .slide-area {
-  width: 60vw;
+  width: 50vw;
   background: #fff;
   border: 2px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,18 +57,18 @@ body {
 
 .instructions-content {
   flex: 0 0 50vh;
-  max-height: 60vh;
   width: 100%;
   overflow-y: auto;
   box-sizing: border-box;
 }
 
 .keyboard-tool-container {
-  flex: 0 0 40vh;
-  max-height: 40vh;
   width: 100%;
   box-sizing: border-box;
   overflow-y: auto;
+  background-color: #222;
+  border-radius: 10px;
+  position: relative;
 }
 
 .instructions-panel h2,
@@ -135,7 +138,7 @@ button:hover {
 .button-group {
   position: absolute;
   bottom: 40px;
-  left: 40px;
+  right: 40px;
   display: flex;
   gap: 10px;
   background-color: #ffffff;
@@ -243,8 +246,84 @@ input[type="number"]#slideNumber:focus {
 }
 
 .modal-content {
-  margin-left: 55px;
+  margin-left: 60px;
   font-size: 1rem;
   color: #222;
   word-break: break-word;
+  justify-content: center;
 }
+
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(24, calc(calc(50vw - 145px) / 24));
+  grid-auto-rows: calc(calc(50vw - 145px) / 24);
+  gap: 5px;
+  width: fit-content;
+  background-color: #333;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.key {
+  background-color: #222;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.1s;
+  padding: 5px;
+}
+
+.key:hover {
+  background-color: #444;
+}
+
+.key:active {
+  transform: scale(0.95);
+}
+
+.function-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(24, calc(calc(50vw - 145px) / 24));
+  gap: 5px;
+}
+
+.main-section {
+  display: contents;
+}
+
+.special-key {
+  background-color: #555;
+}
+
+.placeholder-key {
+  background-color: #333;
+  cursor: default;
+}
+
+.placeholder-key:hover {
+  background-color: #333;
+}
+
+.placeholder-key:active {
+  transform: none;
+}
+
+/* Special key sizes */
+#esc { grid-column: span 3; }
+#tab { grid-column: span 2; }
+#capslock { grid-column: span 2; }
+#leftshift { grid-column: span 2; }
+#rightshift { grid-column: span 3; }
+#enter { grid-column: span 2; grid-row: span 1; }
+#backspace { grid-column: span 2; }
+#spacebar { grid-column: span 8; }
+#numpadadd { grid-column: span 1; grid-row: span 2; }
+#numpadenter { grid-column: span 1; grid-row: span 2; }
+#numpad0 { grid-column: span 2; grid-row: span 1; }
+

@@ -1,16 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Matchbox Assembly Guide v0</title>
-  <link rel="stylesheet" href="styles.css">
+<title>English Keyboard Layout</title>
+<style>
+.keyboard {
+  display: grid;
+  grid-template-columns: repeat(24, 40px);
+  grid-auto-rows: 40px;
+  gap: 5px;
+  width: fit-content;
+  background-color: #333;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.key {
+  background-color: #222;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.1s;
+  padding: 5px;
+}
+
+.key:hover {
+  background-color: #444;
+}
+
+.key:active {
+  transform: scale(0.95);
+}
+
+.function-row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(23, 40px) 1fr;
+  gap: 5px;
+}
+
+.main-section {
+  display: contents;
+}
+
+.special-key {
+  background-color: #555;
+}
+
+.placeholder-key {
+  background-color: #333;
+  cursor: default;
+}
+
+.placeholder-key:hover {
+  background-color: #333;
+}
+
+.placeholder-key:active {
+  transform: none;
+}
+
+/* Special key sizes */
+#esc { grid-column: span 3; }
+#tab { grid-column: span 2; }
+#capslock { grid-column: span 2; }
+#leftshift { grid-column: span 2; }
+#rightshift { grid-column: span 3; }
+#enter { grid-column: span 2; grid-row: span 1; }
+#backspace { grid-column: span 2; }
+#spacebar { grid-column: span 8; }
+#numpadadd { grid-column: span 1; grid-row: span 2; }
+#numpadenter { grid-column: span 1; grid-row: span 2; }
+#numpad0 { grid-column: span 2; grid-row: span 1; }
+</style>
 </head>
 <body>
-  <div class="main-flex">
-    <div class="left-panel">
-      <div class="slide-area" id="slideArea">loading...</div>
-    <div class="keyboard-tool-container">
-      <div class="keyboard">
+
+<div class="keyboard">
   <!-- Function Row -->
   <div class="function-row">
     <div class="key special-key" id="esc">Esc</div>
@@ -149,40 +219,16 @@
     <div class="key special-key wide" id="numpad0">0</div>
     <div class="key special-key" id="numpaddecimal">.</div>
 </div>
-    </div>
-    </div>
 
-    <div class="instructions-panel">
-      <div class="instructions-content">  
-      <h2 id="stepTitle">Step 1</h2>
-      <p id="stepInstructions">Instructions for step 1 will appear here.</p>
-      <div class="modal note-modal">
-        <img class="modal-avatar" src="assets/note.png" alt="Note">
-        <div class="modal-content" id="noteModalContent">
-          Note: This is a placeholder for additional information or tips related to the current step.
-        </div>
-      </div>
-      <div class="modal check-modal">
-        <img class="modal-avatar" src="assets/check.png" alt="Check">
-        <div class="modal-content" id="checkModalContent">
-          Check: This is a placeholder for confirmation or validation of the current step.
-        </div>
-      </div>
-      <div class="modal error-modal">
-        <img class="modal-avatar" src="assets/error.png" alt="Error">
-        <div class="modal-content" id="errorModalContent">
-          Error: This is a placeholder for error messages or warnings related to the current step.
-        </div>
-    </div>
-  </div>
-  </div>
-    <div class="button-group">
-      <div id="tooltip" class="tooltip"></div>
-      <button id="leftBtn">Prev</button>
-      <input type="number" id="slideNumber" min="1" value="1" style="width: 60px; text-align: center;" />
-      <button id="rightBtn">Next</button>
-  </div>
-    </div>
-  <script src="main.js"></script>
+<script>
+// JavaScript can be added here later
+document.querySelectorAll('.key').forEach(key => {
+  key.addEventListener('click', () => {
+    console.log(`Pressed: ${key.id}`);
+    // Add your key functionality here
+  });
+});
+</script>
+
 </body>
 </html>

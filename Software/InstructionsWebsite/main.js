@@ -54,8 +54,9 @@ function renderSlide(index) {
   localStorage.setItem('step', index);
 
   // Instructions
+  let step = null;
   if (instructionsData.length >= index) {
-    const step = instructionsData[index - 1];
+    step = instructionsData[index - 1];
     if (step) {
       stepTitle.textContent = step.stepTitle || `Step ${index}`;
       stepInstructions.textContent = step.instructions || '';
@@ -66,6 +67,35 @@ function renderSlide(index) {
   } else {
     stepTitle.textContent = `Step ${index}`;
     stepInstructions.textContent = '';
+  }
+
+  // Modal content and visibility
+  const noteModal = document.getElementById('noteModalContent').parentElement;
+  const checkModal = document.getElementById('checkModalContent').parentElement;
+  const errorModal = document.getElementById('errorModalContent').parentElement;
+
+  // Notes
+  if (step && Array.isArray(step.note) && step.note.length > 0) {
+    document.getElementById('noteModalContent').innerHTML = step.note.map(n => `<div>${n}</div>`).join('');
+    noteModal.style.display = '';
+  } else {
+    noteModal.style.display = 'none';
+  }
+
+  // Checks
+  if (step && Array.isArray(step.check) && step.check.length > 0) {
+    document.getElementById('checkModalContent').innerHTML = step.check.map(c => `<div>${c}</div>`).join('');
+    checkModal.style.display = '';
+  } else {
+    checkModal.style.display = 'none';
+  }
+
+  // Errors
+  if (step && Array.isArray(step.error) && step.error.length > 0) {
+    document.getElementById('errorModalContent').innerHTML = step.error.map(e => `<div>${e}</div>`).join('');
+    errorModal.style.display = '';
+  } else {
+    errorModal.style.display = 'none';
   }
 }
 
@@ -124,28 +154,28 @@ rightBtn.addEventListener('click', () => {
   renderSlide(current);
 });
 
-// Keyboard navigation for left/right arrow keys
-document.addEventListener('keydown', (e) => {
-  if (e.target === slideNumberInput) return;
-  if (e.repeat) return;
-  if (e.key === 'ArrowLeft') {
-    springyPress(leftBtn);
-    current = (current - 2 + slides.length) % slides.length + 1;
-    renderSlide(current);
-  } else if (e.key === 'ArrowRight') {
-    springyPress(rightBtn);
-    current = (current % slides.length) + 1;
-    renderSlide(current);
-  }
-});
-document.addEventListener('keyup', (e) => {
-  if (e.target === slideNumberInput) return;
-  if (e.key === 'ArrowLeft') {
-    springyRelease(leftBtn);
-  } else if (e.key === 'ArrowRight') {
-    springyRelease(rightBtn);
-  }
-});
+// // Keyboard navigation for left/right arrow keys
+// document.addEventListener('keydown', (e) => {
+//   if (e.target === slideNumberInput) return;
+//   if (e.repeat) return;
+//   if (e.key === 'ArrowLeft') {
+//     springyPress(leftBtn);
+//     current = (current - 2 + slides.length) % slides.length + 1;
+//     renderSlide(current);
+//   } else if (e.key === 'ArrowRight') {
+//     springyPress(rightBtn);
+//     current = (current % slides.length) + 1;
+//     renderSlide(current);
+//   }
+// });
+// document.addEventListener('keyup', (e) => {
+//   if (e.target === slideNumberInput) return;
+//   if (e.key === 'ArrowLeft') {
+//     springyRelease(leftBtn);
+//   } else if (e.key === 'ArrowRight') {
+//     springyRelease(rightBtn);
+//   }
+// });
 
 slideNumberInput.addEventListener('change', () => {
   const val = parseInt(slideNumberInput.value, 10);
