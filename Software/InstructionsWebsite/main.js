@@ -17,6 +17,7 @@ if (isNaN(current) || current < 1 || current > slides.length) {
   current = 1;
   localStorage.setItem('step', current);
 }
+let usingSlideNumInput = false;
 
 function showTooltip(message) {
   tooltip.textContent = message;
@@ -177,6 +178,16 @@ rightBtn.addEventListener('click', () => {
 //   }
 // });
 
+slideNumberInput.addEventListener('focus', () => {
+  usingSlideNumInput = true;
+  console.log(usingSlideNumInput)
+})
+
+slideNumberInput.addEventListener('blur', () => {
+  usingSlideNumInput = false;
+    console.log(usingSlideNumInput)
+})
+
 slideNumberInput.addEventListener('change', () => {
   const val = parseInt(slideNumberInput.value, 10);
   if (val >= 1 && val <= slides.length) {
@@ -209,3 +220,26 @@ fetch('instructions.json')
     instructionsData = [];
     renderSlide(current);
   });
+
+
+document.querySelectorAll('.key').forEach(key => {
+  key.addEventListener('click', () => {
+    console.log(`Pressed: ${key.id}`);
+    // Add your key functionality here
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+    if(!usingSlideNumInput){
+      e.preventDefault()
+    }
+    if(e.repeat){
+      return
+    }
+    console.log(`Pressed: ${e.code}`);
+    document.getElementById(e.code).classList.add("pressed")
+  })
+
+document.addEventListener('keyup', (e) => {
+  document.getElementById(e.code).classList.remove("pressed")
+})

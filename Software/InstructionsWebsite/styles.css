@@ -135,8 +135,8 @@ button:hover {
   background-color: #ffffff;
   padding: 10px;
   border-radius: 5px;
-
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
 }
 
 .tooltip {
@@ -250,24 +250,50 @@ input[type="number"]#slideNumber:focus {
   border-radius: 10px;
   position: fixed;
   left: 40px;
-  bottom: 40px;
+  right: 40px;
+  bottom: 0;
   z-index: 100;
   transition: transform 0.5s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
   box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
-  transform: translateY(117%);
-  max-width: 100vw;
+  /* Hide the container except for the tab (tab height + padding = 35px + 10px) */
+  transform: translateY(calc(100%));
+  max-width: calc(100vw - 80px);
   min-width: 320px;
   padding-bottom: 0;
+  overflow: visible;
 }
 
 .keyboard-tool-container.open {
-  transform: translateY(0%);
+  transform: translateY(-40px);
+}
+
+.keyboard-tool-tab {
+  position: absolute;
+  top: -40px;
+  left: 20px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  padding: 10px 24px;
+  z-index: 110;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.12);
+  transition: background 0.2s;
+}
+
+.keyboard-tool-tab:hover {
+  background: #444;
 }
 
 .keyboard {
   display: grid;
-  grid-template-columns: repeat(24, calc(calc(50vw - 145px) / 24));
-  grid-auto-rows: calc(calc(50vw - 145px) / 24);
+  grid-template-columns: repeat(24, calc(calc(100vw - 220px) / 24));
+  grid-auto-rows: calc(calc(100vw - 220px) / 24);
   gap: 5px;
   width: fit-content;
   background-color: #333;
@@ -283,10 +309,10 @@ input[type="number"]#slideNumber:focus {
   justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
-  font-size: 10px;
+  font-size: 15px;
   cursor: pointer;
   transition: all 0.1s;
-  padding: 5px;
+  padding: 10px;
 }
 
 .key:hover {
@@ -297,12 +323,6 @@ input[type="number"]#slideNumber:focus {
   transform: scale(0.95);
 }
 
-.function-row {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(24, calc(calc(50vw - 145px) / 24));
-  gap: 5px;
-}
 
 .main-section {
   display: contents;
@@ -326,45 +346,26 @@ input[type="number"]#slideNumber:focus {
 }
 
 /* Special key sizes */
-#esc { grid-column: span 3; }
-#tab { grid-column: span 2; }
-#capslock { grid-column: span 2; }
-#leftshift { grid-column: span 2; }
-#rightshift { grid-column: span 3; }
-#enter { grid-column: span 2; grid-row: span 1; }
-#backspace { grid-column: span 2; }
-#spacebar { grid-column: span 8; }
+#Escape { grid-column: span 3; }
+#Tab { grid-column: span 2; }
+#CapsLock { grid-column: span 2; }
+#ShiftLeft { grid-column: span 2; }
+#ShiftRight { grid-column: span 3; }
+#Enter { grid-column: span 2; grid-row: span 1; }
+#Backspace { grid-column: span 2; }
+#Space { grid-column: span 8; }
 #numpadadd { grid-column: span 1; grid-row: span 2; }
 #numpadenter { grid-column: span 1; grid-row: span 2; }
 #numpad0 { grid-column: span 2; grid-row: span 1; }
 
-.keyboard-tool-tab {
-  position: absolute;
-  top: -35px;
-  left: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #333;
-  padding: 10px 24px;
-  z-index: 110;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 -2px 8px rgba(0,0,0,0.12);
-  transition: background 0.2s;
-}
-
-.keyboard-tool-tab:hover {
-  background: #444;
-}
-
 @media (max-width: 1500px) {
-  .keyboard {
-    grid-template-columns: repeat(24, calc(calc(100vw - 160px) / 24));
-    grid-auto-rows: calc(calc(100vw - 160px) / 24);
-    gap: 2px;
+  .button-group {
+    right: 20px;
+    bottom: 20px;
   }
+}
+
+.key.pressed{
+  background-color: #007bff;
+  transform: scale(1.1);
 }
