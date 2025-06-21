@@ -369,3 +369,18 @@ input[type="number"]#slideNumber:focus {
   background-color: #007bff;
   transform: scale(1.1);
 }
+
+.keyboardTooltip {
+    position: absolute;
+    background-color: #007bff;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 3000;
+    display: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.keyboardTooltip.null{
+  background-color: #555;
+}

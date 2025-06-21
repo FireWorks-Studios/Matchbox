@@ -3,27 +3,48 @@ for (let i = 1; i <= 47; i++) {
   slides.push(`assets/${i}.jpeg`);
 }
 
+let mapping = {};
+fetch("Dell KB212-B mapping.json")
+  .then((response) => response.json())
+  .then((data) => {
+    mapping = data.mapping;
+    console.log("Loaded keyboard mapping json:", mapping);
+  })
+  .catch((error) => console.error("Error loading keyboard mapping:", error));
+
 // Elements
-const slideArea = document.getElementById('slideArea');
-const slideNumberInput = document.getElementById('slideNumber');
-const tooltip = document.getElementById('tooltip');
-const stepTitle = document.getElementById('stepTitle');
-const stepInstructions = document.getElementById('stepInstructions');
+const slideArea = document.getElementById("slideArea");
+const slideNumberInput = document.getElementById("slideNumber");
+const tooltip = document.getElementById("tooltip");
+const stepTitle = document.getElementById("stepTitle");
+const stepInstructions = document.getElementById("stepInstructions");
 
 // State
 let instructionsData = [];
-let current = parseInt(localStorage.getItem('step'), 10);
+// Fetch instructions.json and initialize
+fetch("instructions.json")
+  .then((res) => res.json())
+  .then((data) => {
+    instructionsData = data;
+    renderSlide(current);
+  })
+  .catch(() => {
+    instructionsData = [];
+    renderSlide(current);
+  });
+
+let current = parseInt(localStorage.getItem("step"), 10);
 if (isNaN(current) || current < 1 || current > slides.length) {
   current = 1;
-  localStorage.setItem('step', current);
+  localStorage.setItem("step", current);
 }
 let usingSlideNumInput = false;
 
 function showTooltip(message) {
   tooltip.textContent = message;
-  tooltip.style.display = 'block';
+  tooltip.style.display = "block";
   setTimeout(() => {
-    tooltip.style.display = 'none';
+    tooltip.style.display = "none";
   }, 2000);
 }
 
@@ -36,7 +57,7 @@ function preloadImage(index) {
 
 function renderSlide(index) {
   // Calculate indices for prev, current, next (1-based)
-  const prevIdx = (index - 2 + slides.length) % slides.length + 1;
+  const prevIdx = ((index - 2 + slides.length) % slides.length) + 1;
   const nextIdx = (index % slides.length) + 1;
 
   slideArea.innerHTML = `
@@ -52,7 +73,7 @@ function renderSlide(index) {
     </div>
   `;
   slideNumberInput.value = index;
-  localStorage.setItem('step', index);
+  localStorage.setItem("step", index);
 
   // Instructions
   let step = null;
@@ -60,97 +81,103 @@ function renderSlide(index) {
     step = instructionsData[index - 1];
     if (step) {
       stepTitle.textContent = step.stepTitle || `Step ${index}`;
-      stepInstructions.textContent = step.instructions || '';
+      stepInstructions.textContent = step.instructions || "";
     } else {
       stepTitle.textContent = `Step ${index}`;
-      stepInstructions.textContent = '';
+      stepInstructions.textContent = "";
     }
   } else {
     stepTitle.textContent = `Step ${index}`;
-    stepInstructions.textContent = '';
+    stepInstructions.textContent = "";
   }
 
   // Modal content and visibility
-  const noteModal = document.getElementById('noteModalContent').parentElement;
-  const checkModal = document.getElementById('checkModalContent').parentElement;
-  const errorModal = document.getElementById('errorModalContent').parentElement;
+  const noteModal = document.getElementById("noteModalContent").parentElement;
+  const checkModal = document.getElementById("checkModalContent").parentElement;
+  const errorModal = document.getElementById("errorModalContent").parentElement;
 
   // Notes
   if (step && Array.isArray(step.note) && step.note.length > 0) {
-    document.getElementById('noteModalContent').innerHTML = step.note.map(n => `<div>${n}</div>`).join('');
-    noteModal.style.display = '';
+    document.getElementById("noteModalContent").innerHTML = step.note
+      .map((n) => `<div>${n}</div>`)
+      .join("");
+    noteModal.style.display = "";
   } else {
-    noteModal.style.display = 'none';
+    noteModal.style.display = "none";
   }
 
   // Checks
   if (step && Array.isArray(step.check) && step.check.length > 0) {
-    document.getElementById('checkModalContent').innerHTML = step.check.map(c => `<div>${c}</div>`).join('');
-    checkModal.style.display = '';
+    document.getElementById("checkModalContent").innerHTML = step.check
+      .map((c) => `<div>${c}</div>`)
+      .join("");
+    checkModal.style.display = "";
   } else {
-    checkModal.style.display = 'none';
+    checkModal.style.display = "none";
   }
 
   // Errors
   if (step && Array.isArray(step.error) && step.error.length > 0) {
-    document.getElementById('errorModalContent').innerHTML = step.error.map(e => `<div>${e}</div>`).join('');
-    errorModal.style.display = '';
+    document.getElementById("errorModalContent").innerHTML = step.error
+      .map((e) => `<div>${e}</div>`)
+      .join("");
+    errorModal.style.display = "";
   } else {
-    errorModal.style.display = 'none';
+    errorModal.style.display = "none";
   }
 }
 
 function springyPress(btn) {
-  btn.classList.add('springy');
-  btn.classList.remove('springy-bounce');
+  btn.classList.add("springy");
+  btn.classList.remove("springy-bounce");
 }
 
 function springyRelease(btn) {
   // Remove .springy immediately, then trigger .springy-bounce for the animation
-  btn.classList.remove('springy');
+  btn.classList.remove("springy");
   // Force reflow to restart animation if needed
   void btn.offsetWidth;
-  btn.classList.add('springy-bounce');
-  setTimeout(() => btn.classList.remove('springy-bounce'), 250);
+  btn.classList.add("springy-bounce");
+  setTimeout(() => btn.classList.remove("springy-bounce"), 250);
 }
 
 // Navigation handlers
-const leftBtn = document.getElementById('leftBtn');
-const rightBtn = document.getElementById('rightBtn');
+const leftBtn = document.getElementById("leftBtn");
+const rightBtn = document.getElementById("rightBtn");
 
 let leftBtnPressed = false;
 let rightBtnPressed = false;
 
-leftBtn.addEventListener('mousedown', () => {
+leftBtn.addEventListener("mousedown", () => {
   leftBtnPressed = true;
   springyPress(leftBtn);
 });
-leftBtn.addEventListener('mouseup', () => {
+leftBtn.addEventListener("mouseup", () => {
   if (leftBtnPressed) springyRelease(leftBtn);
   leftBtnPressed = false;
 });
-leftBtn.addEventListener('mouseleave', () => {
+leftBtn.addEventListener("mouseleave", () => {
   if (leftBtnPressed) springyRelease(leftBtn);
   leftBtnPressed = false;
 });
-leftBtn.addEventListener('click', () => {
-  current = (current - 2 + slides.length) % slides.length + 1;
+leftBtn.addEventListener("click", () => {
+  current = ((current - 2 + slides.length) % slides.length) + 1;
   renderSlide(current);
 });
 
-rightBtn.addEventListener('mousedown', () => {
+rightBtn.addEventListener("mousedown", () => {
   rightBtnPressed = true;
   springyPress(rightBtn);
 });
-rightBtn.addEventListener('mouseup', () => {
+rightBtn.addEventListener("mouseup", () => {
   if (rightBtnPressed) springyRelease(rightBtn);
   rightBtnPressed = false;
 });
-rightBtn.addEventListener('mouseleave', () => {
+rightBtn.addEventListener("mouseleave", () => {
   if (rightBtnPressed) springyRelease(rightBtn);
   rightBtnPressed = false;
 });
-rightBtn.addEventListener('click', () => {
+rightBtn.addEventListener("click", () => {
   current = (current % slides.length) + 1;
   renderSlide(current);
 });
@@ -178,17 +205,17 @@ rightBtn.addEventListener('click', () => {
 //   }
 // });
 
-slideNumberInput.addEventListener('focus', () => {
+slideNumberInput.addEventListener("focus", () => {
   usingSlideNumInput = true;
-  console.log(usingSlideNumInput)
-})
+  console.log(usingSlideNumInput);
+});
 
-slideNumberInput.addEventListener('blur', () => {
+slideNumberInput.addEventListener("blur", () => {
   usingSlideNumInput = false;
-    console.log(usingSlideNumInput)
-})
+  console.log(usingSlideNumInput);
+});
 
-slideNumberInput.addEventListener('change', () => {
+slideNumberInput.addEventListener("change", () => {
   const val = parseInt(slideNumberInput.value, 10);
   if (val >= 1 && val <= slides.length) {
     current = val;
@@ -199,47 +226,76 @@ slideNumberInput.addEventListener('change', () => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const toolContainer = document.querySelector('.keyboard-tool-container');
-  const toolTab = document.querySelector('.keyboard-tool-tab');
+document.addEventListener("DOMContentLoaded", () => {
+  const toolContainer = document.querySelector(".keyboard-tool-container");
+  const toolTab = document.querySelector(".keyboard-tool-tab");
   if (toolContainer && toolTab) {
-    toolTab.addEventListener('click', () => {
-      toolContainer.classList.toggle('open');
+    toolTab.addEventListener("click", () => {
+      toolContainer.classList.toggle("open");
     });
   }
 });
 
-// Fetch instructions.json and initialize
-fetch('instructions.json')
-  .then(res => res.json())
-  .then(data => {
-    instructionsData = data;
-    renderSlide(current);
-  })
-  .catch(() => {
-    instructionsData = [];
-    renderSlide(current);
-  });
-
-
-document.querySelectorAll('.key').forEach(key => {
-  key.addEventListener('click', () => {
+document.querySelectorAll(".key").forEach((key) => {
+  key.addEventListener("click", () => {
     console.log(`Pressed: ${key.id}`);
     // Add your key functionality here
   });
 });
 
-document.addEventListener('keydown', (e) => {
-    if(!usingSlideNumInput){
-      e.preventDefault()
-    }
-    if(e.repeat){
-      return
-    }
-    console.log(`Pressed: ${e.code}`);
-    document.getElementById(e.code).classList.add("pressed")
-  })
+document.addEventListener("keydown", (e) => {
+  if (!usingSlideNumInput) {
+    e.preventDefault();
+  }
+  if (e.repeat) {
+    return;
+  }
+  console.log(`Pressed: ${e.code}`);
+  document.getElementById(e.code).classList.add("pressed");
+});
 
-document.addEventListener('keyup', (e) => {
-  document.getElementById(e.code).classList.remove("pressed")
-})
+document.addEventListener("keyup", (e) => {
+  document.getElementById(e.code).classList.remove("pressed");
+});
+
+const KeyboardKeys = document.querySelectorAll(".key");
+KeyboardKeys.forEach((key) => {
+  key.addEventListener("mousemove", showkeyboardTooltip);
+  key.addEventListener("mouseout", hidekeyboardTooltip);
+});
+
+function showkeyboardTooltip(event) {
+  const keyboardTooltip = document.getElementById("keyboardTooltip");
+  if (!keyboardTooltip) {
+    const newkeyboardTooltip = document.createElement("div");
+    newkeyboardTooltip.id = "keyboardTooltip";
+    newkeyboardTooltip.classList.add("keyboardTooltip");
+    document.body.appendChild(newkeyboardTooltip);
+  }
+  const keyboardTooltipElement = document.getElementById("keyboardTooltip");
+  keyboardTooltipElement.style.display = "block";
+  if (event.target.classList.contains("key")) {
+    const key = event.target.id;
+    if (mapping[key]) {
+      keyboardTooltipElement.classList.remove("null")
+      keyboardTooltipElement.textContent = `${key}, Mapping: ${mapping[
+        key
+      ].join(", ")}`;
+    } else {
+      keyboardTooltipElement.classList.add("null")
+      keyboardTooltipElement.textContent = `null`
+    }
+    console.log(keyboardTooltipElement.textContent);
+  } else {
+    keyboardTooltipElement.style.display = "none";
+  }
+  keyboardTooltipElement.style.left = `${event.pageX + 10}px`;
+  keyboardTooltipElement.style.top = `${event.pageY + 10}px`;
+}
+
+function hidekeyboardTooltip() {
+  const keyboardTooltip = document.getElementById("keyboardTooltip");
+  if (keyboardTooltip) {
+    keyboardTooltip.style.display = "none";
+  }
+}

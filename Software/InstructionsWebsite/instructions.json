@@ -22,5 +22,18 @@
     ],
     "error": [
     ]
+  },
+  {
+    "stepID": 16,
+    "stepTitle": "Checkpoint",
+    "instructions": "Make sure the Main PCB is sitting flat on the bottom shell.",
+    "note": [
+    ],
+    "check": [
+        "Look at your assembly from the side. There should be no gap between the Main PCB and the bottom shell"
+    ],
+    "error": [
+        "If you notice a gap, please revisit step 10 and double check the alignment."
+    ]
   }
 ]
