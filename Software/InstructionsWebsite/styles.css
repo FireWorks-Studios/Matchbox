@@ -354,9 +354,9 @@ input[type="number"]#slideNumber:focus {
 #Enter { grid-column: span 2; grid-row: span 1; }
 #Backspace { grid-column: span 2; }
 #Space { grid-column: span 8; }
-#numpadadd { grid-column: span 1; grid-row: span 2; }
-#numpadenter { grid-column: span 1; grid-row: span 2; }
-#numpad0 { grid-column: span 2; grid-row: span 1; }
+#NumpadAdd { grid-column: span 1; grid-row: span 2; }
+#NumpadEnter { grid-column: span 1; grid-row: span 2; }
+#Numpad0 { grid-column: span 2; grid-row: span 1; }
 
 @media (max-width: 1500px) {
   .button-group {

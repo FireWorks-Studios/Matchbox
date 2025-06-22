@@ -250,6 +250,7 @@ document.addEventListener("keydown", (e) => {
   if (e.repeat) {
     return;
   }
+  document.getElementById("keycode-logger").textContent = `: ${e.code}`;
   console.log(`Pressed: ${e.code}`);
   document.getElementById(e.code).classList.add("pressed");
 });
@@ -258,7 +259,10 @@ document.addEventListener("keyup", (e) => {
   document.getElementById(e.code).classList.remove("pressed");
 });
 
-const KeyboardKeys = document.querySelectorAll(".key");
+const KeyboardKeys = Array.from(document.querySelectorAll(".key")).filter(
+  (el) => !el.classList.contains("placeholder-key")
+);
+
 KeyboardKeys.forEach((key) => {
   key.addEventListener("mousemove", showkeyboardTooltip);
   key.addEventListener("mouseout", hidekeyboardTooltip);

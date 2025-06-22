@@ -10,7 +10,10 @@
     <div class="left-panel">
       <div class="slide-area" id="slideArea">loading...</div>
     <div class="keyboard-tool-container">
-      <div class="keyboard-tool-tab">Keyboard Tool</div>
+      <div class="keyboard-tool-tab">
+        Keyboard Tool 
+        <p id="keycode-logger">keycode: </p>
+      </div>
       <div class="keyboard">
   <!-- Function Row -->
     <div class="key special-key" id="Escape">Esc</div>
@@ -27,14 +30,14 @@
     <div class="key special-key" id="F11">F11</div>
     <div class="key special-key" id="F12">F12</div>
     <div class="key placeholder-key"></div>
-    <div class="key special-key" id="">PrtScn</div>
-    <div class="key special-key" id="f11">F11</div>
-    <div class="key special-key" id="f12">F12</div>
+    <div class="key special-key" id="PrintScreen">PrtScn</div>
+    <div class="key special-key" id="ScrollLock">Scroll Lock</div>
+    <div class="key special-key" id="Pause">Pause</div>
     <div class="key placeholder-key"></div>
-    <div class="key special-key" id="numlock">Num Lock</div>
-    <div class="key special-key" id="numpaddivide">/</div>
-    <div class="key special-key" id="numpadmultiply">*</div>
-    <div class="key special-key" id="numpadsubtract">-</div>
+    <div class="key special-key" id="NumLock">Num Lock</div>
+    <div class="key special-key" id="NumpadDivide">/</div>
+    <div class="key special-key" id="NumpadMultiply">*</div>
+    <div class="key special-key" id="NumpadSubtract">-</div>
 
   <!-- Main Keyboard -->
   <!-- First Row -->
@@ -53,14 +56,14 @@
   <div class="key" id="Equal">=</div>
   <div class="key special-key" id="Backspace">Backspace</div>
     <div class="key placeholder-key"></div>
-    <div class="key special-key" id="insert">Insert</div>
-    <div class="key special-key" id="home">Home</div>
-    <div class="key special-key" id="pageup">Page Up</div>
+    <div class="key special-key" id="Insert">Insert</div>
+    <div class="key special-key" id="Home">Home</div>
+    <div class="key special-key" id="PageUp">Page Up</div>
     <div class="key placeholder-key"></div>
-        <div class="key special-key" id="numpad7">7</div>
-    <div class="key special-key" id="numpad8">8</div>
-    <div class="key special-key" id="numpad9">9</div>
-    <div class="key special-key tall" id="numpadadd">+</div>
+        <div class="key special-key" id="Numpad7">7</div>
+    <div class="key special-key" id="Numpad8">8</div>
+    <div class="key special-key" id="Numpad9">9</div>
+    <div class="key special-key tall" id="NumpadAdd">+</div>
 
 
 
@@ -80,13 +83,13 @@
   <div class="key" id="BracketRight">]</div>
   <div class="key" id="Backslash">\</div>
     <div class="key placeholder-key"></div>
-    <div class="key special-key" id="delete">Delete</div>
-    <div class="key special-key" id="end">End</div>
-    <div class="key special-key" id="pagedown">Page Down</div>
+    <div class="key special-key" id="Delete">Delete</div>
+    <div class="key special-key" id="End">End</div>
+    <div class="key special-key" id="PageDown">Page Down</div>
     <div class="key placeholder-key"></div>
-    <div class="key special-key" id="numpad4">4</div>
-    <div class="key special-key" id="numpad5">5</div>
-    <div class="key special-key" id="numpad6">6</div>
+    <div class="key special-key" id="Numpad4">4</div>
+    <div class="key special-key" id="Numpad5">5</div>
+    <div class="key special-key" id="Numpad6">6</div>
 
 
   <!-- Third Row -->
@@ -109,10 +112,10 @@
     <div class="key placeholder-key"></div>
 
     <div class="key placeholder-key"></div>
-        <div class="key special-key" id="numpad1">1</div>
-    <div class="key special-key" id="numpad2">2</div>
-    <div class="key special-key" id="numpad3">3</div>
-    <div class="key special-key" id="numpadenter">Enter</div>
+        <div class="key special-key" id="Numpad1">1</div>
+    <div class="key special-key" id="Numpad2">2</div>
+    <div class="key special-key" id="Numpad3">3</div>
+    <div class="key special-key" id="NumpadEnter">Enter</div>
 
 
 
@@ -135,8 +138,8 @@
     <div class="key placeholder-key"></div>
       <div class="key placeholder-key"></div>
 
-    <div class="key special-key wide" id="numpad0">0</div>
-    <div class="key special-key" id="numpaddecimal">.</div>
+    <div class="key special-key wide" id="Numpad0">0</div>
+    <div class="key special-key" id="NumpadDecimal">.</div>
 
 
   <!-- Fifth Row -->
@@ -146,8 +149,8 @@
   <div class="key" id="Space">Space</div>
   <div class="key special-key" id="AltRight">Alt</div>
   <div class="key special-key" id="MetaRight">Win</div>
-  <div class="key special-key" id="menu">Menu</div>
-  <div class="key special-key" id="ctrlright">Ctrl</div>
+  <div class="key special-key" id="Menu">Menu</div>
+  <div class="key special-key" id="ControlRight">Ctrl</div>
   <div class="key placeholder-key"></div>
     <div class="key special-key" id="ArrowLeft">◀</div>
     <div class="key special-key" id="ArrowDown">▼</div>
